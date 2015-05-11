@@ -34,8 +34,7 @@ build=rm -f apps/studio/.git/shallow && \
 	$(foreach app, $(NO_BUILD_APPS), $(copy_app)) \
 	$(copy_external_apps)
 
-copy_assets=cp default-homescreens.json gaia/apps/verticalhome/build/ && \
-						cp wallpaper@2.25x.jpg gaia/build/config/
+copy_assets=cp wallpaper@2.25x.jpg gaia/build/config/
 
 # Copies apps that we download and preload directly from Marketplace.
 copy_external_apps=find preload-app-toolkit/ -type d -maxdepth 1 \
@@ -48,16 +47,16 @@ copy_app=rm -rf gaia/outoftree_apps/$(app) && \
 		cp -r apps/$(app) gaia/outoftree_apps/) &&
 
 hellomake:
-	$(build) && (cd gaia && make)
+	$(build) && (cd gaia && make GAIA_DISTRIBUTION_DIR=`pwd`/spark)
 
 shallow:
 	$(build)
 
 install-gaia:
-	$(build) && (cd gaia && make install-gaia)
+	$(build) && (cd gaia && make install-gaia GAIA_DISTRIBUTION_DIR=`pwd`/spark)
 
 reset-gaia:
-	$(build) && (cd gaia && make reset-gaia)
+	$(build) && (cd gaia && make reset-gaia GAIA_DISTRIBUTION_DIR=`pwd`/spark)
 
 sync:
 	./repo sync && ./get-external-apps.sh
